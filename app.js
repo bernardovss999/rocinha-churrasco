@@ -1,206 +1,131 @@
-/* Sabor na Brasa — interações e animações compartilhadas */
+/* Sabor na Brasa — estrutura compartilhada: topo, menu, rodapé, botão do Brasinha, galeria. */
 const WA = 'https://wa.me/message/DRXH6UFHI6NGJ1';
-const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const IG = 'https://www.instagram.com/sabornabrasarocinha';
 const $ = (s, el = document) => el.querySelector(s);
 const $$ = (s, el = document) => [...el.querySelectorAll(s)];
-const page = document.body.dataset.page;
+document.documentElement.classList.remove('no-js');
 
 const ICON = {
-  home: '<path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
-  menu: '<path d="M4 6h16M4 12h16M4 18h10"/>',
-  fire: '<path d="M12 22c4 0 7-3 7-7 0-4-3-6-4-10-2 2-3 4-3 6-1-1-2-2-2-4-3 2-5 5-5 8 0 4 3 7 7 7z"/>',
-  photo: '<rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-8 8"/>',
-  pin: '<path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="10" r="2.5"/>',
-  arrow: '<path d="M7 17L17 7M9 7h8v8"/>'
+  menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
+  close: '<path d="M6 6l12 12M18 6L6 18"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  send: '<path d="M4 12l16-8-6 16-2.5-6.5z"/><path d="M11.5 13.5L20 4"/>',
+  pin: '<path d="M12 21s7-6.2 7-11.5A7 7 0 0 0 5 9.5C5 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  bike: '<circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h5l3 8M10 9H7M15 9l-2-4h3"/>',
+  plate: '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4.5"/>',
+  chat: '<path d="M20 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 20 12z"/><path d="M8.5 11h7M8.5 14h4"/>',
+  list: '<path d="M9 6h11M9 12h11M9 18h11"/><circle cx="4.5" cy="6" r="1"/><circle cx="4.5" cy="12" r="1"/><circle cx="4.5" cy="18" r="1"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  flame: '<path d="M12 21c3.9 0 6.5-2.7 6.5-6.3 0-3.6-2.6-5.6-3.7-9.2-1.8 1.6-2.7 3.4-2.8 5.3-.9-.9-1.6-2-1.8-3.6C7.6 9 5.5 11.8 5.5 14.7 5.5 18.3 8.1 21 12 21z"/>',
+  forks: '<path d="M4.5 19.5L14 10M12.5 8.5l3 3M12.5 8.5l3-3M15.5 11.5l3-3"/><path d="M19.5 19.5L10 10M11.5 8.5l-3 3M11.5 8.5l-3-3M8.5 11.5l-3-3"/>',
+  insta: '<rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".6" fill="currentColor"/>',
+  route: '<circle cx="6" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M8.5 18H15a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h6.5"/>'
 };
-const svg = (k, w = 2) => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round">${ICON[k]}</svg>`;
+const WA_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.5 14.4c-.3-.1-1.8-.9-2-1-.3-.1-.5-.1-.7.1-.2.3-.8 1-.9 1.2-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.8-.7 2-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4A9.8 9.8 0 1 1 12 21.8zm0-21.6A11.8 11.8 0 0 0 1.9 18l-1.7 6 6.2-1.6A11.8 11.8 0 1 0 12 .2z"/></svg>';
+const icon = (k, cls = '') => `<svg class="${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${ICON[k]}</svg>`;
+window.SNB = { WA, ICON, WA_SVG, icon };
 
-/* ---------- Topo + tab bar ---------- */
-const links = [
-  ['index.html', 'Início', 'home'], ['cardapio.html', 'Cardápio', 'menu'],
-  ['pedido.html', 'Pedir', 'fire'], ['fotos.html', 'Fotos', 'photo'], ['contato.html', 'Onde fica', 'pin']
-];
-document.body.insertAdjacentHTML('afterbegin', `
-<header class="top" id="top">
-  <a class="brand" href="index.html" aria-label="Sabor na Brasa — início"><img src="img/logo.jpg" alt="Logo Churrascaria Sabor na Brasa"><span><b>SABOR NA BRASA</b><small>ROCINHA • RJ</small></span></a>
-  <nav class="deskNav" aria-label="Principal">
-    <a href="index.html">Início</a><a href="cardapio.html">Cardápio</a><a href="fotos.html">Fotos</a><a href="sobre.html">Nossa história</a><a href="contato.html">Onde fica</a>
-  </nav>
-  <a class="pill" href="pedido.html">🔥 Pedir</a>
-</header>
-<nav class="tabbar" aria-label="Menu do app"><span class="blob"></span>
-  ${links.map(([h, t, i]) => i === 'fire'
-    ? `<a class="order" href="${h}"><span class="b">${svg(i)}</span>${t}</a>`
-    : `<a href="${h}">${svg(i)}${t}</a>`).join('')}
-</nav>
-<div class="curtain" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
-<div class="toast" id="toast"></div>`);
+/* Ícones declarados no HTML: <i data-i="pin"></i> */
+$$('[data-i]').forEach(el => { el.outerHTML = el.dataset.i === 'wa' ? WA_SVG : icon(el.dataset.i); });
 
+/* ---------- Topo, menu mobile e rodapé ---------- */
+const PAGES = [['index.html', 'Início'], ['cardapio.html', 'Cardápio'], ['fotos.html', 'Fotos'], ['sobre.html', 'Nossa história'], ['contato.html', 'Onde fica']];
 const here = location.pathname.split('/').pop() || 'index.html';
-$$('.deskNav a, .tabbar a').forEach(a => { if (a.getAttribute('href') === here) a.classList.add('on'); });
-const tabs = $$('.tabbar a'), onIdx = tabs.findIndex(a => a.classList.contains('on'));
-const blob = $('.tabbar .blob');
-if (onIdx >= 0 && onIdx !== 2) blob.style.transform = `translateX(calc(${onIdx * 100}% + ${onIdx * 12}px))`; else blob.style.opacity = 0;
+const navLinks = PAGES.map(([h, t]) => `<a href="${h}"${h === here ? ' class="on" aria-current="page"' : ''}>${t}</a>`).join('');
+const brand = `<a class="brand" href="index.html" aria-label="Sabor na Brasa — página inicial"><img src="img/logo-128.webp" width="48" height="48" alt="Logo Churrascaria Sabor na Brasa"><span><b>SABOR NA BRASA</b><small>Churrascaria · Rocinha</small></span></a>`;
 
-/* esconde topo ao descer, mostra ao subir */
-let lastY = 0;
-addEventListener('scroll', () => {
-  const y = scrollY, top = $('#top');
-  top.classList.toggle('solid', y > 30);
-  top.classList.toggle('hide', y > lastY && y > 300);
-  lastY = y;
-}, { passive: true });
+document.body.insertAdjacentHTML('afterbegin', `
+<header class="top" id="top"><div class="wrap">
+  ${brand}
+  <nav class="nav" aria-label="Principal">${navLinks}</nav>
+  <a class="btn" href="pedido.html">${icon('chat')}<span>Fazer pedido</span></a>
+  <button class="menuBtn" aria-label="Abrir menu" aria-expanded="false">${icon('menu')}</button>
+</div></header>
+<div class="drawer" id="drawer" aria-hidden="true">
+  <button class="x" aria-label="Fechar menu">${icon('close')}</button>
+  <nav aria-label="Menu">${navLinks}<a href="pedido.html"${here === 'pedido.html' ? ' class="on"' : ''}>Fazer pedido</a></nav>
+  <a class="btn block" href="pedido.html">${icon('chat')}Pedir com o Brasinha</a>
+  <a class="btn wa block" href="${WA}" target="_blank" rel="noopener">${WA_SVG}Falar no WhatsApp</a>
+</div>`);
 
-/* ---------- Toast ---------- */
-function toast(t) { const el = $('#toast'); el.textContent = t; el.classList.add('on'); clearTimeout(el._t); el._t = setTimeout(() => el.classList.remove('on'), 2600); }
-window.toast = toast;
+document.body.insertAdjacentHTML('beforeend', `
+<footer><div class="wrap">
+  <div class="foot">
+    <div>${brand}<p>Churrasco feito na brasa, buffet de comida caseira e quentinha com entrega na Rocinha. Desde 2021.</p></div>
+    <div><h4>Navegação</h4><nav aria-label="Rodapé">${PAGES.map(([h, t]) => `<a href="${h}">${t}</a>`).join('')}<a href="pedido.html">Fazer pedido</a></nav></div>
+    <div><h4>Visite</h4><p>Estrada da Gávea, 413<br>Rocinha — Rio de Janeiro/RJ</p><p style="margin-top:12px"><a href="${IG}" target="_blank" rel="noopener">@sabornabrasarocinha</a><br><a href="${WA}" target="_blank" rel="noopener">WhatsApp</a></p></div>
+  </div>
+  <div class="legal"><span>© ${new Date().getFullYear()} Churrascaria Sabor na Brasa</span><span>Entrega na Rocinha · R$4</span></div>
+</div></footer>`);
 
-/* ---------- Preloader (só na 1ª visita da sessão) ---------- */
-const loader = $('.loader');
-let seen = false; try { seen = sessionStorage.getItem('snb-seen'); sessionStorage.setItem('snb-seen', 1); } catch (e) {}
-function start() { document.documentElement.classList.add('ready'); runIntro(); }
-if (loader && !seen && !RM) {
-  const c = $('.count', loader); let n = 0;
-  const iv = setInterval(() => { n = Math.min(100, n + Math.ceil(Math.random() * 9)); c.textContent = String(n).padStart(3, '0'); if (n >= 100) { clearInterval(iv); loader.classList.add('out'); setTimeout(() => { loader.remove(); start(); }, 700); } }, 45);
-} else { loader && loader.remove(); requestAnimationFrame(start); }
+const topBar = $("#top"), drawer = $('#drawer'), menuBtn = $('.menuBtn');
+const setDrawer = on => { drawer.classList.toggle('on', on); drawer.setAttribute('aria-hidden', !on); menuBtn.setAttribute('aria-expanded', on); document.body.style.overflow = on ? 'hidden' : ''; };
+menuBtn.addEventListener('click', () => setDrawer(true));
+$('.x', drawer).addEventListener('click', () => setDrawer(false));
+const onScroll = () => topBar.classList.toggle("solid", scrollY > 20);
+addEventListener('scroll', onScroll, { passive: true }); onScroll();
 
-/* ---------- Transição entre páginas ---------- */
+/* ---------- Brasinha: inline (home/pedido) ou em painel (demais páginas) ---------- */
+const inlineBot = $('[data-bot]');
+let panel, panelBot;
+function abrirPainel() {
+  if (!panel) {
+    document.body.insertAdjacentHTML('beforeend', `<div class="panel" role="dialog" aria-modal="true" aria-label="Pedido com o Brasinha"><div class="scrim"></div><div class="box"><button class="close" aria-label="Fechar">${icon('close')}</button><div class="bot" id="panelBot"></div></div></div>`);
+    panel = $('.panel');
+    const fechar = () => { panel.classList.remove('on'); document.body.style.overflow = ''; };
+    $('.scrim', panel).addEventListener('click', fechar); $('.close', panel).addEventListener('click', fechar);
+    addEventListener('keydown', e => e.key === 'Escape' && fechar());
+    panelBot = window.Brasinha.mount($('#panelBot'));
+  }
+  panel.classList.add('on'); document.body.style.overflow = 'hidden';
+  return panelBot;
+}
+function irParaBot(item) {
+  if (inlineBot && inlineBot._bot) {
+    inlineBot.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (item) inlineBot._bot.pedir(item);
+    return;
+  }
+  const b = abrirPainel(); if (item) b.pedir(item);
+}
+window.irParaBot = irParaBot;
+
+if (here !== 'pedido.html') {
+  document.body.classList.add('hasFab');
+  document.body.insertAdjacentHTML('beforeend', `<button class="fab" id="fab" aria-label="Fazer pedido com o Brasinha"><img src="img/logo-128.webp" alt=""><span><b>Pedir com o Brasinha</b><small>Monte e envie no WhatsApp</small></span><span class="badge" id="fabBadge"></span></button>`);
+  const fab = $('#fab');
+  fab.addEventListener('click', () => irParaBot());
+  /* na home, o botão só aparece quando o bot do topo sai da tela */
+  if (inlineBot) new IntersectionObserver(([e]) => fab.classList.toggle('hide', e.isIntersecting), { threshold: .25 }).observe(inlineBot);
+}
 document.addEventListener('click', e => {
-  const a = e.target.closest('a'); if (!a) return;
-  const h = a.getAttribute('href');
-  if (!h || h.startsWith('#') || a.target === '_blank' || /^(https?:|mailto:|tel:)/.test(h) || e.metaKey || e.ctrlKey) return;
-  e.preventDefault(); navigator.vibrate?.(8);
-  $('.curtain').classList.add('in');
-  setTimeout(() => location.href = h, RM ? 0 : 520);
-});
-addEventListener('pageshow', e => { if (e.persisted) $('.curtain').classList.remove('in'); });
-
-/* ---------- Split text ---------- */
-$$('.split').forEach(el => {
-  const walk = node => [...node.childNodes].forEach(n => {
-    if (n.nodeType === 3) {
-      const frag = document.createDocumentFragment();
-      n.textContent.split(/(\s+)/).forEach(word => {
-        if (!word.trim()) { frag.append(word); return; }
-        const w = document.createElement('span'); w.className = 'w';
-        [...word].forEach(ch => { const c = document.createElement('span'); c.className = 'c'; c.textContent = ch; w.append(c); });
-        frag.append(w);
-      });
-      n.replaceWith(frag);
-    } else if (n.nodeType === 1) walk(n);
-  });
-  walk(el);
-  $$('.c', el).forEach((c, i) => c.style.transitionDelay = (i * 0.028) + 's');
+  const b = e.target.closest('[data-add],[data-bot-open]'); if (!b) return;
+  e.preventDefault(); irParaBot(b.dataset.add);
 });
 
-/* ---------- Reveal on scroll ---------- */
-const io = new IntersectionObserver(es => es.forEach(en => {
-  if (!en.isIntersecting) return;
-  en.target.classList.add('go'); io.unobserve(en.target);
-  if (en.target.dataset.count) countUp(en.target);
-}), { threshold: .18, rootMargin: '0px 0px -40px 0px' });
-function runIntro() { $$('.rv, .rv-img, .split:not(.hero .split), .brushline, [data-count], .masonry figure').forEach(el => io.observe(el)); $$('.hero .split, .phead .split').forEach((el, i) => setTimeout(() => el.classList.add('go'), 120 + i * 260)); }
-$$('[data-delay]').forEach(el => el.style.transitionDelay = el.dataset.delay + 's');
+/* ---------- Revelação ao rolar ---------- */
+const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('go'); io.unobserve(en.target); } }), { threshold: .12, rootMargin: '0px 0px -40px 0px' });
+$$('.rv').forEach((el, i) => { if (el.dataset.d) el.style.transitionDelay = el.dataset.d + 's'; io.observe(el); });
 
-function countUp(el) {
-  const end = +el.dataset.count, dur = 1400, t0 = performance.now();
-  const step = t => { const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 4); el.textContent = Math.round(end * e); if (p < 1) requestAnimationFrame(step); };
-  requestAnimationFrame(step);
-}
-
-/* ---------- Ripple + vibração em botões ---------- */
-document.addEventListener('pointerdown', e => {
-  const b = e.target.closest('.btn, .pill, .quick button, .tabs button'); if (!b) return;
-  const r = b.getBoundingClientRect(), s = Math.max(r.width, r.height), sp = document.createElement('span');
-  sp.className = 'ripple'; sp.style.cssText = `width:${s}px;height:${s}px;left:${e.clientX - r.left - s / 2}px;top:${e.clientY - r.top - s / 2}px`;
-  b.style.position ||= 'relative'; b.style.overflow = 'hidden'; b.append(sp); setTimeout(() => sp.remove(), 700);
-});
-
-/* ---------- Brasas (partículas) no hero ---------- */
-const cv = $('#embers');
-if (cv && !RM) {
-  const ctx = cv.getContext('2d'); let W, H, tilt = 0, ps = [];
-  const fit = () => { const d = Math.min(devicePixelRatio, 2); W = cv.width = cv.offsetWidth * d; H = cv.height = cv.offsetHeight * d; };
-  fit(); addEventListener('resize', fit);
-  const spawn = (x, y, burst) => ({ x: x ?? Math.random() * W, y: y ?? H + 10, r: Math.random() * 2.4 + .6, vy: -(Math.random() * 1.6 + .5) * (burst ? 2.4 : 1), vx: (Math.random() - .5) * (burst ? 4 : .6), life: 1, hue: 20 + Math.random() * 25 });
-  for (let i = 0; i < 70; i++) { const p = spawn(); p.y = Math.random() * H; ps.push(p); }
-  addEventListener('deviceorientation', e => { tilt = (e.gamma || 0) / 30; });
-  cv.parentElement.addEventListener('pointerdown', e => { const r = cv.getBoundingClientRect(), d = W / r.width; for (let i = 0; i < 26; i++) ps.push(spawn((e.clientX - r.left) * d, (e.clientY - r.top) * d, true)); });
-  (function loop() {
-    ctx.clearRect(0, 0, W, H); ctx.globalCompositeOperation = 'lighter';
-    ps.forEach(p => {
-      p.x += p.vx + Math.sin(p.y / 40) * .4 + tilt; p.y += p.vy; p.life -= .0035; p.vx *= .99;
-      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 4);
-      g.addColorStop(0, `hsla(${p.hue},100%,65%,${p.life})`); g.addColorStop(1, 'hsla(20,100%,50%,0)');
-      ctx.fillStyle = g; ctx.beginPath(); ctx.arc(p.x, p.y, p.r * 4, 0, 7); ctx.fill();
-    });
-    ps = ps.filter(p => p.life > 0 && p.y > -20); while (ps.length < 70) ps.push(spawn());
-    requestAnimationFrame(loop);
-  })();
-}
-
-/* ---------- Tilt 3D + brilho nos portais ---------- */
-$$('[data-tilt]').forEach(el => {
-  el.addEventListener('pointermove', e => {
-    const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height;
-    el.style.transform = `perspective(900px) rotateY(${(x - .5) * 10}deg) rotateX(${(.5 - y) * 10}deg)`;
-    el.style.setProperty('--mx', x * 100 + '%'); el.style.setProperty('--my', y * 100 + '%');
-  });
-  el.addEventListener('pointerleave', () => el.style.transform = '');
-});
-
-/* ---------- Pilha de cartas (swipe) ---------- */
-$$('.deck').forEach(deck => {
-  const cards = $$('.card', deck);
-  const lay = () => cards.forEach((c, i) => { const k = (i - deck._i + cards.length) % cards.length; c.style.zIndex = cards.length - k; c.style.transform = `translateY(${k * 14}px) scale(${1 - k * .05}) rotate(${k ? (k % 2 ? 3 : -3) : 0}deg)`; c.style.opacity = k > 3 ? 0 : 1; });
-  deck._i = 0; lay();
-  let sx = 0, dx = 0, drag = null;
-  deck.addEventListener('pointerdown', e => { drag = cards[deck._i]; sx = e.clientX; dx = 0; drag.style.transition = 'none'; drag.setPointerCapture(e.pointerId); });
-  deck.addEventListener('pointermove', e => { if (!drag) return; dx = e.clientX - sx; drag.style.transform = `translateX(${dx}px) rotate(${dx / 14}deg)`; });
-  const end = () => {
-    if (!drag) return; drag.style.transition = '';
-    if (Math.abs(dx) > 70) { drag.style.transform = `translateX(${dx > 0 ? 600 : -600}px) rotate(${dx / 6}deg)`; navigator.vibrate?.(12); setTimeout(() => { deck._i = (deck._i + 1) % cards.length; lay(); }, 260); }
-    else if (Math.abs(dx) < 5) { deck._i = (deck._i + 1) % cards.length; lay(); }
-    else lay();
-    drag = null;
-  };
-  deck.addEventListener('pointerup', end); deck.addEventListener('pointercancel', end);
-});
-
-/* ---------- Lightbox ---------- */
-const lb = $('.lightbox');
-if (lb) {
-  $$('.masonry figure').forEach(f => f.addEventListener('click', () => { $('img', lb).src = $('img', f).src; $('p', lb).textContent = f.dataset.cap || $('figcaption', f)?.textContent || ''; lb.classList.add('on'); }));
+/* ---------- Galeria com ampliação ---------- */
+const figs = $$('.gallery figure');
+if (figs.length) {
+  document.body.insertAdjacentHTML('beforeend', `<div class="lightbox" role="dialog" aria-label="Foto ampliada"><button class="x" aria-label="Fechar">${icon('close')}</button><figure><img alt=""><figcaption></figcaption></figure></div>`);
+  const lb = $('.lightbox'), img = $('img', lb);
+  figs.forEach(f => f.addEventListener('click', () => {
+    const src = $('img', f); img.src = src.currentSrc || src.src; img.alt = src.alt;
+    $('figcaption', lb).textContent = $('figcaption', f)?.textContent || ''; lb.classList.add('on');
+  }));
   lb.addEventListener('click', () => lb.classList.remove('on'));
 }
 
-/* ---------- Linha do tempo enchendo ---------- */
-const tl = $('.timeline');
-if (tl) addEventListener('scroll', () => { const r = tl.getBoundingClientRect(), p = Math.min(1, Math.max(0, (innerHeight * .7 - r.top) / r.height)); tl.style.setProperty('--p', p * 100 + '%'); }, { passive: true });
-
-/* ---------- Abas do cardápio ---------- */
-const mt = $('.tabs');
-if (mt) {
-  const bs = $$('button', mt);
-  bs.forEach(b => b.addEventListener('click', () => { const t = $(b.dataset.go); scrollTo({ top: t.offsetTop - 130, behavior: 'smooth' }); }));
-  addEventListener('scroll', () => { let cur = bs[0]; bs.forEach(b => { if ($(b.dataset.go).getBoundingClientRect().top < 200) cur = b; }); bs.forEach(b => b.classList.toggle('on', b === cur)); }, { passive: true });
+/* ---------- Cardápio: abas que acompanham a rolagem ---------- */
+const mn = $('.menuNav');
+if (mn) {
+  const as = $$('a', mn), secs = as.map(a => $(a.getAttribute('href')));
+  addEventListener('scroll', () => {
+    let i = 0; secs.forEach((s, k) => { if (s.getBoundingClientRect().top < 200) i = k; });
+    as.forEach((a, k) => a.classList.toggle('on', k === i));
+  }, { passive: true });
 }
-/* "Pedir esse" → leva para o agente com o item */
-$$('[data-add]').forEach(b => b.addEventListener('click', () => { location.href = 'pedido.html?item=' + encodeURIComponent(b.dataset.add); }));
-
-/* ---------- GSAP: parallax do hero + carrossel horizontal preso ---------- */
-function withGsap() {
-  if (!window.gsap || !window.ScrollTrigger || RM) { $$('.hscroll').forEach(h => h.classList.add('native')); return; }
-  gsap.registerPlugin(ScrollTrigger);
-  if (window.Lenis) { const l = new Lenis({ lerp: .1 }); l.on('scroll', ScrollTrigger.update); gsap.ticker.add(t => l.raf(t * 1000)); gsap.ticker.lagSmoothing(0); }
-  $$('.hero .bg, .phead .bgword').forEach(el => gsap.to(el, { yPercent: 18, ease: 'none', scrollTrigger: { trigger: el.closest('header,section,.hero,.phead'), start: 'top top', end: 'bottom top', scrub: true } }));
-  $$('.hero h1').forEach(el => gsap.to(el, { scale: .86, opacity: .2, ease: 'none', scrollTrigger: { trigger: '.hero', start: 'top top', end: 'bottom top', scrub: true } }));
-  $$('.hscroll').forEach(h => {
-    const tr = $('.htrack', h);
-    gsap.to(tr, { x: () => -(tr.scrollWidth - innerWidth), ease: 'none', scrollTrigger: { trigger: h, start: 'center center', end: () => '+=' + tr.scrollWidth, pin: true, scrub: .6, invalidateOnRefresh: true } });
-    $$('.hcard img', h).forEach(img => gsap.fromTo(img, { scale: 1.3 }, { scale: 1, ease: 'none', scrollTrigger: { trigger: h, start: 'center center', end: () => '+=' + tr.scrollWidth, scrub: true } }));
-  });
-  $$('.portal img').forEach(img => gsap.fromTo(img, { yPercent: -12 }, { yPercent: 0, ease: 'none', scrollTrigger: { trigger: img.parentElement, scrub: true } }));
-  $$('.marquee').forEach(m => gsap.fromTo(m, { xPercent: m.classList.contains('alt') ? 6 : -6 }, { xPercent: m.classList.contains('alt') ? -6 : 6, ease: 'none', scrollTrigger: { trigger: m, scrub: true } }));
-}
-addEventListener('load', withGsap);

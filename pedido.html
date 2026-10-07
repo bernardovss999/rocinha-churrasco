@@ -1,38 +1,48 @@
 <!doctype html>
-<html lang="pt-BR">
+<html lang="pt-BR" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Fazer Pedido | Sabor na Brasa — Peça sua Quentinha na Rocinha</title>
-<meta name="description" content="Monte seu pedido com o Brasinha, nosso atendente virtual, e envie pelo WhatsApp. Quentinha R$33 ou R$40, entrega na Rocinha R$4.">
-<meta name="keywords" content="pedir quentinha Rocinha, delivery churrasco Rocinha, pedido WhatsApp Rocinha">
+<title>Fazer Pedido | Sabor na Brasa — Peça com o Brasinha e envie no WhatsApp</title>
+<meta name="description" content="Monte seu pedido com o Brasinha, atendente do Sabor na Brasa, e envie pronto pelo WhatsApp. Buffet R$33, buffet + churrasco R$40, entrega na Rocinha R$4.">
 <link rel="canonical" href="https://sabornabrasarocinha.com.br/pedido.html">
-<meta name="theme-color" content="#0d0b0a">
+<meta name="theme-color" content="#121010">
 <meta property="og:type" content="website"><meta property="og:locale" content="pt_BR">
-<meta property="og:title" content="Fazer Pedido | Sabor na Brasa — Peça sua Quentinha na Rocinha"><meta property="og:description" content="Monte seu pedido com o Brasinha, nosso atendente virtual, e envie pelo WhatsApp. Quentinha R$33 ou R$40, entrega na Rocinha R$4."><meta property="og:image" content="img/quentinha.jpg">
-<link rel="icon" href="img/logo.jpg">
+<meta property="og:title" content="Fazer Pedido | Sabor na Brasa — Peça com o Brasinha e envie no WhatsApp">
+<meta property="og:description" content="Monte seu pedido com o Brasinha, atendente do Sabor na Brasa, e envie pronto pelo WhatsApp. Buffet R$33, buffet + churrasco R$40, entrega na Rocinha R$4.">
+<meta property="og:image" content="https://sabornabrasarocinha.com.br/img/quentinha.jpg">
+<link rel="icon" type="image/png" href="img/logo-128.png">
+<link rel="apple-touch-icon" href="img/logo-256.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Kaushan+Script&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":"https://sabornabrasarocinha.com.br/"},{"@type":"ListItem","position":2,"name":"Fazer Pedido","item":"https://sabornabrasarocinha.com.br/pedido.html"}]}</script>
-
 </head>
 <body data-page="pedido">
-<main>
-<div class="chat">
-<div class="chatHead"><div class="av"><img src="img/logo.jpg" alt="Brasinha, atendente virtual"></div><div><b>Brasinha 🔥</b><small>Atendente virtual • online</small></div><span class="beta">PRÉVIA IA</span></div>
-<div class="msgs" id="msgs" aria-live="polite"></div>
-<div class="cartBar" id="cartBar"><span id="cartTxt"></span><button class="pill" id="send" style="border:0">Enviar no Zap</button></div>
-<div class="quick" id="quick"></div>
-<form class="composer" id="form"><input id="inp" placeholder="Escreva aqui… ex: quero uma quentinha" autocomplete="off" aria-label="Mensagem"><button aria-label="Enviar"><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M3 20l18-8L3 4v6l12 2-12 2z"/></svg></button></form>
-</div>
-<script src="agente.js" defer></script>
-
+<main class="orderPage tex">
+  <div class="wrap orderGrid">
+    <div class="orderInfo">
+      <p class="crumbs"><a href="index.html">Início</a> / Fazer pedido</p>
+      <span class="eyebrow">Atendimento online</span>
+      <h1>Peça com o <em>Brasinha</em></h1>
+      <p class="lead">Ele anota, soma e envia o pedido pronto para o WhatsApp da casa. Sem cadastro e sem aplicativo.</p>
+      <div class="steps">
+        <div class="step"><span class="n">01</span><h3>Escolha os pratos</h3><p>Toque nas opções ou escreva do seu jeito.</p></div>
+        <div class="step"><span class="n">02</span><h3>Confira o resumo</h3><p>Entrega ou retirada, nome e endereço. O total aparece antes.</p></div>
+        <div class="step"><span class="n">03</span><h3>Envie no WhatsApp</h3><p>Um toque e a nossa equipe recebe e confirma.</p></div>
+      </div>
+      <ul class="infoList">
+        <li><i data-i="bike"></i>Entrega em toda a Rocinha por R$ 4</li>
+        <li><i data-i="pin"></i>Retirada na Estrada da Gávea, 413</li>
+        <li><i data-i="clock"></i>Almoço todos os dias</li>
+      </ul>
+      <p style="margin-top:24px"><a class="link" href="https://wa.me/message/DRXH6UFHI6NGJ1" target="_blank" rel="noopener">Prefere falar com uma pessoa? Chame no WhatsApp <i data-i="arrow"></i></a></p>
+    </div>
+    <div data-bot id="brasinha"></div>
+  </div>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js" defer></script>
 <script src="app.js" defer></script>
+<script src="agente.js" defer></script>
 </body>
 </html>
