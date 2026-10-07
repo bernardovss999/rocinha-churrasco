@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://sabornabrasarocinha.com.br/sitemap.xml
